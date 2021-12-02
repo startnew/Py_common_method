@@ -1,0 +1,2 @@
+master_host: 10.51.0.3
+visible_gpus: '7'
