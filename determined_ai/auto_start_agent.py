@@ -13,12 +13,22 @@ if __name__ =="__main__":
     
     avalible_gpus = getAvalibleGpuList(min_mem)
     print("满足最低内存{}Mb的可用gpu有{}".format(min_mem,avalible_gpus))
-    # 每个代理 分配一个GPU
-    for i,gpu in enumerate(avalible_gpus ):
+    # 每个代理 分配min_num_gpu个GPU
+    min_num_gpu = 2
+    now_gpus = []
+    for i,gpu in enumerate(avalible_gpus):
+        now_gpus.append(gpu)
+        if i % min_num_gpu-1 == 0:
+            select_gpus = ",".join(now_gpus)
+            now_gpus = []
+        else:
+            continue
+          
+
         with open("./agent.yaml","r",encoding="utf-8") as f:
             config_dict = yaml.full_load(f)
             print(config_dict.keys())
-            config_dict['visible_gpus'] = gpu
+            config_dict['visible_gpus'] = select_gpus
             config_dict["agent_id"] = hostname+"_"+gpu
         with open("./agent.yaml","w",encoding="utf-8") as f:
             print(config_dict)
@@ -33,9 +43,11 @@ if __name__ =="__main__":
         print(command_strs)
         os.system(command_strs)
 
-        time.sleep(5)
+        time.sleep(45)
         
         print("当前配置文件:{}".format(config_dict))
+  
+
 # 服务停止的命令如下
 #docker stop $(docker ps -a | grep determined-agent:0.17.2|awk '{print $1}')
-#docker rm $(docker ps -a | grep determined-agent:0.17.2|awk '{print $1}')
+#docker rm $(docker ps -a | grep determined-agent:0.17.2|awk '{print $1}') 
