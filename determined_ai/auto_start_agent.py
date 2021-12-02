@@ -36,3 +36,6 @@ if __name__ =="__main__":
         time.sleep(5)
         
         print("当前配置文件:{}".format(config_dict))
+# 服务停止的命令如下
+#docker stop $(docker ps -a | grep determined-agent:0.17.2|awk '{print $1}')
+#docker rm $(docker ps -a | grep determined-agent:0.17.2|awk '{print $1}')
