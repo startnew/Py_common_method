@@ -16,7 +16,7 @@ if __name__ =="__main__":
     # 每个代理 分配一个GPU
     for i,gpu in enumerate(avalible_gpus ):
         with open("./agent.yaml","r",encoding="utf-8") as f:
-            config_dict = yaml.load(f)
+            config_dict = yaml.full_load(f)
             print(config_dict.keys())
             config_dict['visible_gpus'] = gpu
             config_dict["agent_id"] = hostname+"_"+gpu
